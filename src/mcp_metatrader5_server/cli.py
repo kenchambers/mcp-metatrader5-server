@@ -75,7 +75,7 @@ def main():
     elif args.command == "install":
         # Install for Claude Desktop
         try:
-            cmd = [sys.executable, "--with", "mcp-metatrader5-server", "fastmcp", "install", "src\mcp_metatrader5_server\server.py"]
+            cmd = [sys.executable, "--with", "mcp-metatrader5-server", "fastmcp", "install", r"src\mcp_metatrader5_server\server.py"]
             return subprocess.call(cmd)
         except ImportError:
             logger.error("Failed to install MCP server for Claude Desktop")

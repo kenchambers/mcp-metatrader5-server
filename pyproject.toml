@@ -20,7 +20,7 @@ classifiers = [
     "Topic :: Office/Business :: Financial :: Investment",
 ]
 dependencies = [
-    "fastmcp>=0.4.1",
+    "fastmcp>=2.0.0",
     "httpx>=0.28.1",
     "mcp[cli]>=1.6.0",
     "metatrader5>=5.0.4874",
