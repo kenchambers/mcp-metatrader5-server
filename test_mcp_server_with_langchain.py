@@ -80,6 +80,36 @@ After successfully logging in, check if there are any open positions in my MT5 t
     
     return response
 
+async def test_direct_fastmcp_client():
+    """
+    Tests direct connection to the MT5 MCP server using fastmcp.Client.
+    """
+    logger.info("Attempting direct connection with fastmcp.Client to http://localhost:8000/sse")
+    try:
+        from fastmcp import Client as FastMCPCoreClient # Alias to avoid confusion if Client is defined elsewhere
+        async with FastMCPCoreClient("http://localhost:8000/sse") as client:
+            tools = await client.list_tools()
+            logger.info(f"Direct FastMCP Client - Successfully connected. Available tools: {tools}")
+            print("\n=== Direct FastMCP Client Response ===")
+            print(f"Available tools: {tools}")
+            print("===================================\n")
+            
+            # You could also try a simple, argument-less tool call if one exists
+            # For example, if your server has a "ping" tool:
+            # try:
+            #     ping_result = await client.call_tool("ping")
+            #     logger.info(f"Direct FastMCP Client - Ping result: {ping_result}")
+            #     print(f"Ping result: {ping_result}")
+            # except Exception as e:
+            #     logger.error(f"Direct FastMCP Client - Error calling ping tool: {e}")
+            #     print(f"Error calling ping tool: {e}")
+
+    except Exception as e:
+        logger.error(f"Direct FastMCP Client - Connection failed: {e}", exc_info=True)
+        print("\n=== Direct FastMCP Client Error ===")
+        print(f"Connection failed: {e}")
+        print("==================================\n")
+
 async def main():
     """Main function to run the MT5 MCP test."""
     print("Starting MT5 MCP server test...")
@@ -87,6 +117,7 @@ async def main():
     
     try:
         await run_agent_with_mt5_tools()
+        await test_direct_fastmcp_client()
         print("Test completed successfully.")
     except Exception as e:
         logger.error(f"Error during test: {e}")
