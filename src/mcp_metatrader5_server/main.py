@@ -7,7 +7,7 @@ This is the main entry point for the MetaTrader 5 MCP server.
 import logging
 import os
 from fastmcp import FastMCP
-from fastmcp.prompts.base import UserMessage, AssistantMessage
+from fastmcp.prompts import Message
 
 # Import server modules
 from mcp_metatrader5_server.server import mcp
@@ -34,14 +34,16 @@ def connect_to_mt5(account: int, password: str, server: str) -> list:
         server: Trading server name
     """
     return [
-        UserMessage("I need to connect to my MetaTrader 5 account and start trading."),
-        AssistantMessage(
-            "I'll help you connect to your MetaTrader 5 account. First, we need to initialize the MT5 terminal and then log in to your account."
+        Message("I need to connect to my MetaTrader 5 account and start trading.", role="user"),
+        Message(
+            "I'll help you connect to your MetaTrader 5 account. First, we need to initialize the MT5 terminal and then log in to your account.",
+            role="assistant"
         ),
-        AssistantMessage(
-            f"Let me do that for you. I'll use your account number {account}, connect to the {server} server, and log in."
+        Message(
+            f"Let me do that for you. I'll use your account number {account}, connect to the {server} server, and log in.",
+            role="assistant"
         ),
-        UserMessage("Great, please proceed with the connection."),
+        Message("Great, please proceed with the connection.", role="user"),
     ]
 
 @mcp.prompt()
@@ -54,12 +56,13 @@ def analyze_market_data(symbol: str, timeframe: int) -> list:
         timeframe: Timeframe (e.g., 1 for M1, 5 for M5, 15 for M15, etc.)
     """
     return [
-        UserMessage(f"I want to analyze the market data for {symbol} on the {timeframe} timeframe."),
-        AssistantMessage(
+        Message(f"I want to analyze the market data for {symbol} on the {timeframe} timeframe.", role="user"),
+        Message(
             f"I'll help you analyze the market data for {symbol} on the {timeframe} timeframe. "
-            f"First, let me fetch the recent price data."
+            f"First, let me fetch the recent price data.",
+            role="assistant"
         ),
-        UserMessage("Please show me the recent price movements and any significant patterns."),
+        Message("Please show me the recent price movements and any significant patterns.", role="user"),
     ]
 
 @mcp.prompt()
@@ -73,12 +76,13 @@ def place_trade(symbol: str, order_type: str, volume: float) -> list:
         volume: Trade volume in lots
     """
     return [
-        UserMessage(f"I want to place a {order_type} order for {symbol} with a volume of {volume} lots."),
-        AssistantMessage(
+        Message(f"I want to place a {order_type} order for {symbol} with a volume of {volume} lots.", role="user"),
+        Message(
             f"I'll help you place a {order_type} order for {symbol} with a volume of {volume} lots. "
-            f"First, let me check the current market conditions and prepare the order."
+            f"First, let me check the current market conditions and prepare the order.",
+            role="assistant"
         ),
-        UserMessage("Please proceed with placing the order."),
+        Message("Please proceed with placing the order.", role="user"),
     ]
 
 @mcp.prompt()
@@ -87,11 +91,12 @@ def manage_positions() -> list:
     Prompt for managing open positions.
     """
     return [
-        UserMessage("I want to check and manage my open positions."),
-        AssistantMessage(
-            "I'll help you manage your open positions. Let me first fetch all your current open positions."
+        Message("I want to check and manage my open positions.", role="user"),
+        Message(
+            "I'll help you manage your open positions. Let me first fetch all your current open positions.",
+            role="assistant"
         ),
-        UserMessage("Please show me the details of my open positions and any recommendations."),
+        Message("Please show me the details of my open positions and any recommendations.", role="user"),
     ]
 
 @mcp.prompt()
@@ -103,12 +108,13 @@ def analyze_trading_history(days: int) -> list:
         days: Number of days to analyze
     """
     return [
-        UserMessage(f"I want to analyze my trading history for the past {days} days."),
-        AssistantMessage(
+        Message(f"I want to analyze my trading history for the past {days} days.", role="user"),
+        Message(
             f"I'll help you analyze your trading history for the past {days} days. "
-            f"Let me fetch your historical orders and deals."
+            f"Let me fetch your historical orders and deals.",
+            role="assistant"
         ),
-        UserMessage("Please show me my performance statistics and any patterns in my trading."),
+        Message("Please show me my performance statistics and any patterns in my trading.", role="user"),
     ]
 
 # Add context to help AI assistants understand how to use the MetaTrader 5 API
