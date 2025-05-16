@@ -165,7 +165,7 @@ def market_data_guide() -> str:
         return file.read()
 
 # Create a proper ASGI app from the FastMCP object
-app = mcp.streamable_http_app(path='/sse')
+app = mcp.streamable_http_app(path='/sse/')
 
 # Run the server
 if __name__ == "__main__":
