@@ -7,7 +7,7 @@ This is the main entry point for the MetaTrader 5 MCP server.
 import logging
 import os
 from fastmcp import FastMCP
-from mcp.types import UserMessage, AssistantMessage
+from mcp_metatrader5_server.utils import UserMessage, AssistantMessage
 
 # Import server modules
 from mcp_metatrader5_server.server import mcp

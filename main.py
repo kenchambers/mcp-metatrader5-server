@@ -7,7 +7,6 @@ This is the main entry point for the MetaTrader 5 MCP server.
 import logging
 import os
 from fastmcp import FastMCP
-from mcp.types import UserMessage, AssistantMessage
 
 # Import server modules
 from mt5_server import mcp
@@ -20,6 +19,34 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("mt5-mcp-server")
+
+# Simple implementations for message classes
+class UserMessage:
+    """Message from a user in a prompt."""
+    
+    def __init__(self, content):
+        self.role = "user"
+        self.content = content
+    
+    def __repr__(self):
+        return f"UserMessage(content={self.content!r})"
+    
+    def to_dict(self):
+        return {"role": self.role, "content": self.content}
+
+
+class AssistantMessage:
+    """Message from an assistant in a prompt."""
+    
+    def __init__(self, content):
+        self.role = "assistant"
+        self.content = content
+    
+    def __repr__(self):
+        return f"AssistantMessage(content={self.content!r})"
+    
+    def to_dict(self):
+        return {"role": self.role, "content": self.content}
 
 # Add prompts to help AI assistants use the MetaTrader 5 API
 
