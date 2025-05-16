@@ -451,4 +451,4 @@ tick = get_symbol_info_tick("EURUSD")
 """
 
 # Create a proper ASGI app from the FastMCP object
-app = mcp.streamable_http_app(path='/sse/')
+app = mcp.streamable_http_app(path='/sse', include_in_schema=True, redirect_slashes=False)
