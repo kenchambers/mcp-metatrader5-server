@@ -12,6 +12,12 @@ A Model Context Protocol (MCP) server for MetaTrader 5, allowing AI assistants t
 
 ## Installation
 
+### From PyPI
+
+```bash
+uv pip install mcp-metatrader5-server
+```
+
 ### From Source
 
 ```bash
@@ -22,7 +28,6 @@ pip install -e .
 
 ## Requirements
 
-- uv
 - Python 3.11 or higher
 - MetaTrader 5 terminal installed
 - MetaTrader 5 account (demo or real)
@@ -50,38 +55,29 @@ uv run mt5mcp dev --host 0.0.0.0 --port 8080
 To install the server for Claude Desktop:
 
 ```bash
-git clone https://github.com/Qoyyuum/mcp-metatrader5-server
-cd mcp-metatrader5-server
-uv run fastmcp install src\mcp_metatrader5_server\server.py
+mt5-mcp install
 ```
 
-Check your `claude_desktop_config.json` file. It should look something like this:
+## Client Connection
 
-```json
-{
-  "mcpServers": {
-    "MetaTrader 5 MCP Server": {
-      "command": "uv",
-      "args": [
-        "run",
-        "--with",
-        "MetaTrader5",
-        "--with",
-        "fastmcp",
-        "--with",
-        "numpy",
-        "--with",
-        "pandas",
-        "--with",
-        "pydantic",
-        "fastmcp",
-        "run",
-        "C:\\FULL_PATH_TO\\src\\mcp_metatrader5_server\\server.py"
-      ]
+The server exposes an SSE endpoint at `/sse`. When connecting with a client, use this endpoint:
+
+```python
+from langchain_mcp_adapters.client import MultiServerMCPClient
+
+client = MultiServerMCPClient(
+    {
+        "mt5": {
+            "transport": "sse",
+            "url": "http://localhost:8000/sse"
+        },
     }
-  }
-}
+)
 ```
+
+## Implementation Notes
+
+This server uses FastMCP's ASGI application support. The MCP server is exposed through a proper ASGI app created using `streamable_http_app()`, which avoids the "FastMCP object is not callable" error that can occur when using the FastMCP object directly with ASGI servers.
 
 ## API Reference
 

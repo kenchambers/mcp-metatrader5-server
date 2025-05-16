@@ -11,7 +11,7 @@ import sys
 import subprocess
 from importlib.metadata import version
 
-from mcp_metatrader5_server.main import mcp
+from mcp_metatrader5_server.main import app
 
 logger = logging.getLogger("mt5-mcp-server.cli")
 
@@ -60,7 +60,7 @@ def main():
             import uvicorn
             logger.info(f"Starting server at {args.host}:{args.port}")
             uvicorn.run(
-                "mcp_metatrader5_server.main:mcp",
+                "mcp_metatrader5_server.main:app",
                 host=args.host,
                 port=args.port,
                 reload=True
@@ -68,7 +68,7 @@ def main():
             return 0
         except ImportError:
             # If uvicorn is not available, try using the command line
-            cmd = [sys.executable, "-m", "uvicorn", "mcp_metatrader5_server.main:mcp", 
+            cmd = [sys.executable, "-m", "uvicorn", "mcp_metatrader5_server.main:app", 
                    f"--host={args.host}", f"--port={args.port}", "--reload"]
             logger.info(f"Running command: {' '.join(cmd)}")
             return subprocess.call(cmd)

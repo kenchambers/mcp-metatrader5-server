@@ -137,6 +137,9 @@ def market_data_guide() -> str:
     with open("docs/market_data_guide.md", "r") as file:
         return file.read()
 
+# Create a proper ASGI app from the FastMCP object
+app = mcp.streamable_http_app(path='/sse')
+
 # Run the server
 if __name__ == "__main__":
     # Check if running in development mode
@@ -145,7 +148,7 @@ if __name__ == "__main__":
     if dev_mode:
         # Run in development mode
         import uvicorn
-        uvicorn.run("main:mcp.app", host="0.0.0.0", port=8000, reload=True)
+        uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
     else:
         # Run with FastMCP CLI
         print("Run the server with: fastmcp dev main.py")
